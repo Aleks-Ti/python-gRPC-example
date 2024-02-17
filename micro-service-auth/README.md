@@ -8,8 +8,6 @@
 
 ```poetry shell```
 
-```poetry add fastapi```
-
 ```poetry add grpcio```
 
 ```poetry add grpcio-tools```
