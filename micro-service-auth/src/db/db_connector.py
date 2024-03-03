@@ -16,5 +16,6 @@ def get_connection_params():
 
 
 async def db_session():
+    """Не работает, постоянно возвращает генератор а не объект сессии, надо бы починить."""
     with await connect(**get_connection_params()) as conn:
         yield conn

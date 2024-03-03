@@ -1,18 +1,18 @@
 from src.db import db_connector
 from asyncpg import connect, Connection
 import logging
+from datetime import datetime
 
-
-async def get_user(username, password):
+async def get_user(email, password):
     conn: Connection = None
     try:
         conn = await connect(**db_connector.get_connection_params())
         query = ("""
-            select * from public.user as us where us.username = $1 and us.password = $2;
+            select * from public.user as us where us.email = $1 and us.password = $2;
         """)
 
         # следует использовать conn.fetch или conn.fetchrow, в зависимости от того, ожидается ли одна строка результата или несколько.
-        user = await conn.fetch(query, username, password)
+        user = await conn.fetch(query, email, password)
         return user
     except Exception as err:
         conn.close()
@@ -21,49 +21,48 @@ async def get_user(username, password):
         if conn:
             await conn.close()
 
-# >>> async def run():
-# ...     # Initial schema:
-# ...     # CREATE TYPE custom AS (x int, y int);
-# ...     # CREATE TABLE tbl(id int, info custom);
-# ...     con = await asyncpg.connect(user='postgres')
-# ...     async with con.transaction():
-# ...         # Prevent concurrent changes in the table
-# ...         await con.execute('LOCK TABLE tbl')
-# ...         await change_type(con)
 
-# эксперимент надо провести будет
-
-
-async def viebat_data_for_tests(*args, **kwargs):
+async def register_user(username, email, password):
     conn: Connection = None
+    conn = await connect(**db_connector.get_connection_params())
+    transaction = conn.transaction()
+    await transaction.start()
     try:
-        conn = await connect(**db_connector.get_connection_params())
-        async with conn.transaction():
-            query = (
-                """
-                insert into public.user (
-                    username, password
-                )
-                values (
-                    'admin', 'qwer-qwer'
-                )
-                """
+        query = (
+            """
+            insert into public.user (
+                is_active, username, email, password, date_of_registration
             )
-            await conn.execute(query)
-            return await conn.fetch(query)
+            values (
+                false, $1, $2, $3, $4
+            );
+            """
+        )
+        time_now = datetime.now()
+        await conn.execute(query, username, email, password, time_now)
     except Exception as err:
-        logging.exception(f"пизда рулю: {err}")
+        await transaction.rollback()
+        if not conn.is_closed():
+            conn.close()
+        logging.exception(str(err))
+        return False
+    else:
+        await transaction.commit()
+        if not conn.is_closed():
+            conn.close()
+        return True
 
 
 async def get_user_alternative(username, password):
-    """Надо попробовать через конектор/генгератор"""
     conn: Connection = None
     try:
-        conn = db_connector.db_session()
-        query = ("""
-            select * from public.user as us where us.name = %s and us.email = %s;
-        """)
-        user = await conn.execute(query, username, password)
-        return user
+        async for connection in db_connector.db_session():
+            conn = connection
+            query = ("""
+                select * from public.user as us where us.name = $1 and us.email = $1;
+            """)
+            # user = await conn.execute(query, username, password)
+            user = await conn.execute(query, username, password)
+            return user
     except Exception as err:
         logging.exception(str(err))

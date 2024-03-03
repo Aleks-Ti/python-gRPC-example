@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0eregister.proto\x12\x04\x61uth\":\n\x17UserRegisterCredentials\x12\r\n\x05\x65mail\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"-\n\x1aNotificationRegistrMessage\x12\x0f\n\x07message\x18\x01 \x01(\t\"b\n\x18\x41\x64minRegisterCredentials\x12\x13\n\x0b\x61\x64min_token\x18\x01 \x01(\t\x12\x10\n\x08username\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\x12\x10\n\x08password\x18\x04 \x01(\t2\xd9\x02\n\x0fRegisterService\x12O\n\x0cRegisterUser\x12\x1d.auth.UserRegisterCredentials\x1a .auth.NotificationRegistrMessage\x12O\n\x0c\x41\x63tivateUser\x12\x1d.auth.UserRegisterCredentials\x1a .auth.NotificationRegistrMessage\x12Q\n\x0e\x44\x65\x61\x63tivateUser\x12\x1d.auth.UserRegisterCredentials\x1a .auth.NotificationRegistrMessage\x12Q\n\rRegisterAdmin\x12\x1e.auth.AdminRegisterCredentials\x1a .auth.NotificationRegistrMessageb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0eregister.proto\x12\x04\x61uth\"L\n\x17UserRegisterCredentials\x12\x10\n\x08username\x18\x01 \x01(\t\x12\r\n\x05\x65mail\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\"-\n\x1aNotificationRegistrMessage\x12\x0f\n\x07message\x18\x01 \x01(\t\"b\n\x18\x41\x64minRegisterCredentials\x12\x13\n\x0b\x61\x64min_token\x18\x01 \x01(\t\x12\x10\n\x08username\x18\x02 \x01(\t\x12\r\n\x05\x65mail\x18\x03 \x01(\t\x12\x10\n\x08password\x18\x04 \x01(\t2\xd9\x02\n\x0fRegisterService\x12O\n\x0cRegisterUser\x12\x1d.auth.UserRegisterCredentials\x1a .auth.NotificationRegistrMessage\x12O\n\x0c\x41\x63tivateUser\x12\x1d.auth.UserRegisterCredentials\x1a .auth.NotificationRegistrMessage\x12Q\n\x0e\x44\x65\x61\x63tivateUser\x12\x1d.auth.UserRegisterCredentials\x1a .auth.NotificationRegistrMessage\x12Q\n\rRegisterAdmin\x12\x1e.auth.AdminRegisterCredentials\x1a .auth.NotificationRegistrMessageb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -22,11 +22,11 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'register_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
   _globals['_USERREGISTERCREDENTIALS']._serialized_start=24
-  _globals['_USERREGISTERCREDENTIALS']._serialized_end=82
-  _globals['_NOTIFICATIONREGISTRMESSAGE']._serialized_start=84
-  _globals['_NOTIFICATIONREGISTRMESSAGE']._serialized_end=129
-  _globals['_ADMINREGISTERCREDENTIALS']._serialized_start=131
-  _globals['_ADMINREGISTERCREDENTIALS']._serialized_end=229
-  _globals['_REGISTERSERVICE']._serialized_start=232
-  _globals['_REGISTERSERVICE']._serialized_end=577
+  _globals['_USERREGISTERCREDENTIALS']._serialized_end=100
+  _globals['_NOTIFICATIONREGISTRMESSAGE']._serialized_start=102
+  _globals['_NOTIFICATIONREGISTRMESSAGE']._serialized_end=147
+  _globals['_ADMINREGISTERCREDENTIALS']._serialized_start=149
+  _globals['_ADMINREGISTERCREDENTIALS']._serialized_end=247
+  _globals['_REGISTERSERVICE']._serialized_start=250
+  _globals['_REGISTERSERVICE']._serialized_end=595
 # @@protoc_insertion_point(module_scope)

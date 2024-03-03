@@ -15,17 +15,3 @@ message UserCredentials {
 message TokenResponse {
     string token = 1;
 }
-
-
-// message UserData {  // сейчас не используется
-//     map<string, string> data = 1; // пример словаря в данных
-// }
-
-// message AdminRegisterCredentials(
-//     string email_admin = 1;
-//     string password_admin = 2;
-//     UserData user_data = 3;
-    // repeated string user_data = 3; это типо список строк, если бы я хотел чтобы именно списком прилетали какие либо даннные.
-//     )
-
-

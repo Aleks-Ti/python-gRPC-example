@@ -1,14 +1,6 @@
-from collections.abc import Callable
 from dataclasses import dataclass
 from os import getenv
-import subprocess
 from sqlalchemy.engine import URL
-from sqlalchemy.ext.asyncio import (
-    AsyncEngine,
-    AsyncSession,
-    create_async_engine,
-)
-from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -42,18 +34,3 @@ class DataBaseConfig:
             port=self.port,
             database=self.name_db,
         ).render_as_string(hide_password=False)
-
-
-def create_metadata_engine(url: URL | str) -> AsyncEngine:
-    return create_async_engine(url=url, echo=True, pool_pre_ping=True)
-
-
-async_session_maker: Callable[..., AsyncSession] = sessionmaker(
-    create_metadata_engine(DataBaseConfig().build_connection_str()),
-    class_=AsyncSession,
-    expire_on_commit=False,
-)
-
-
-async def migrate():
-    subprocess.run("alembic upgrade head", shell=True, check=True)

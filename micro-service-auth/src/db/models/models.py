@@ -33,6 +33,9 @@ class User(Base):
     last_name: Mapped[str] = mapped_column(
         sa.String(64), nullable=True, unique=False
     )
+    email: Mapped[str] = mapped_column(
+        sa.String(256), nullable=False, unique=True
+    )
     password: Mapped[str] = mapped_column(
         sa.String(4096), nullable=False, unique=True
     )
