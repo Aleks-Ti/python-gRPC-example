@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package auth;
+
+
+service RegisterService {
+    rpc RegisterUser(UserRegisterCredentials) returns (NotificationRegistrMessage);  // пусть выдает временный токен на три дня
+    rpc ActivateUser(UserRegisterCredentials) returns (NotificationRegistrMessage);  // меня в БД флаг на то что юзер подтвердил почту с которой регистрировался
+    rpc DeactivateUser(UserRegisterCredentials) returns(NotificationRegistrMessage);
+    rpc RegisterAdmin(AdminRegisterCredentials) returns(NotificationRegistrMessage); 
+}
+
+
+message UserRegisterCredentials {
+    string email = 1;
+    string password = 2;
+}
+
+
+message NotificationRegistrMessage {
+    string message = 1;
+}
+
+
+message AdminRegisterCredentials {
+    string admin_token = 1;
+    string username = 2;
+    string email = 3;
+    string password = 4;
+}

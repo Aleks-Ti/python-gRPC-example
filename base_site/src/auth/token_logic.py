@@ -1,6 +1,6 @@
 import grpc
-import src.protobuf.AuthService_pb2 as pb2
-import src.protobuf.AuthService_pb2_grpc as pb2_grpc
+import src.protobuf.auth.auth_pb2 as pb2
+import src.protobuf.auth.auth_pb2_grpc as pb2_grpc
 
 
 async def get_token(username, password):
@@ -8,7 +8,7 @@ async def get_token(username, password):
         """channel = grpc.insecure_channel('localhost:8011'): Это создает канал для gRPC-соединения
         с сервером, который слушает на localhost и порту 8003. Функция insecure_channel указывает,
         что соединение не защищено, то есть оно не использует SSL/TLS."""
-        channel = grpc.insecure_channel('localhost:8011')
+        channel = grpc.insecure_channel('localhost:8012')
         # важно при отладке указывать именно localhost, а то будет вываливаться ошибка dns и
         # прочее, из за того что обмен данных не защищен.
 

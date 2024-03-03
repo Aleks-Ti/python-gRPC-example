@@ -8,6 +8,10 @@ app = FastAPI()
 
 class User(BaseModel):
     username: str
+    first_name: str | None
+    last_name: str | None
+    email: str
+    is_admin: bool | None
     password: str
 
 
