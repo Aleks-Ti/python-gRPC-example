@@ -1,11 +1,22 @@
 import grpc
 from src.protobuf.register import register_pb2
 from src.protobuf.register import register_pb2_grpc
-from src.db.query_db.get_user import register_user
+from src.users.service import UserService
+
+
+class AuxiliaryInterface:
+    """
+    Simulation of values from the received service data,
+    if module <register_service.proto> were module <register.py>.
+    from rpc_service.register.proto import UserRegisterCredentials
+    """
+    username: str
+    email: str
+    password: str
 
 
 class RegisterService(register_pb2_grpc.RegisterServiceServicer):
-    async def RegisterUser(self, request, context):
+    async def RegisterUser(self, request: AuxiliaryInterface, context):
         try:
             print("кто то пытается зарегаться")
             user = await register_user(request.username, request.email, request.password)

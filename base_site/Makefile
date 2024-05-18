@@ -13,3 +13,12 @@ start:
 	--host 127.0.0.1 \
 	--port 8010 \
 	"src.main:app"
+
+start_pytest_user:
+	pytest src/test/users/::TestUser -v
+
+rivision:
+	alembic revision head -m {%MAKECMDGOALS}
+
+st:
+	ruff . --fix

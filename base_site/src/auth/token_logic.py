@@ -1,3 +1,5 @@
+import logging
+
 import grpc
 
 from src.protobuf.auth import auth_pb2
@@ -5,6 +7,7 @@ from src.protobuf.auth import auth_pb2_grpc
 from src.protobuf.register import register_pb2
 from src.protobuf.register import register_pb2_grpc
 from src.settings.app_settings import GRPC_PORT
+from src.settings.exeptions import GrpcExeptions
 
 
 async def get_token(email, password):
@@ -25,8 +28,17 @@ async def get_token(email, password):
         Он передает UserCredentials (емаил и пароль) и ожидает ответа от сервера."""
         response = stub.LoginUser(auth_pb2.UserCredentials(email=email, password=password))
         return response.token
-    except Exception as err:
-        raise err
+    except grpc.RpcError as rpc_error:
+        status_code = rpc_error.code()
+        details = rpc_error.details()
+        if status_code == grpc.StatusCode.NOT_FOUND:
+            raise GrpcExeptions(details)
+        if status_code == grpc.StatusCode.INVALID_ARGUMENT:
+            raise GrpcExeptions(details)
+        logging.exception(f"Unexpected grpc.RpcError: {rpc_error}")
+        raise
+    except Exception:
+        raise
 
 
 async def register_user(username, email, password):

@@ -25,7 +25,7 @@ async def serve():
     except Exception as err:
         raise err
     finally:
-        server.stop()
+        await server.stop(grace=5)
 
 
 if __name__ == "__main__":

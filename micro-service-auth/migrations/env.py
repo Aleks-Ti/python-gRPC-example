@@ -6,17 +6,9 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 from alembic import context
 
-from src.db.models.models import metadata
-from src.db.connector_for_alembic_and_alchemy import DataBaseConfig
-from src.db.models.models import (   # noqa
-    Accesses,
-    Achievement,
-    Admin,
-    AdministrativeRights,
-    Moderator,
-    Profile,
-    User,
-)
+from src.users.models import metadata
+from src.db.build_coonector_db import DataBaseConfig
+from src.users.models import User  # noqa
 
 
 config = context.config

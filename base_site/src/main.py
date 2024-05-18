@@ -2,12 +2,13 @@ from fastapi import Response, FastAPI, HTTPException
 from pydantic import BaseModel, Field
 from src.auth.token_logic import get_token, register_user
 import logging
+from src.settings.exeptions import GrpcExeptions
 
 app = FastAPI()
 
 
 class User(BaseModel):
-    username: str = Field(..., examples=["admin"])
+    username: str | None
     first_name: str | None
     last_name: str | None
     email: str = Field(..., examples=["admin@admin.admin"])
@@ -21,9 +22,12 @@ async def login(user: User, user_response: Response):
         user_response.set_cookie(key="token", value=token)
         logging.info(token)
         return {"token": token}
+    except GrpcExeptions as err:
+        logging.exception(str(err))
+        raise HTTPException(status_code=400, detail=err.detail)
     except Exception as err:
-        logging.warning(str(err))
-        raise HTTPException(status_code=400, detail=err)
+        logging.exception(str(err))
+        raise HTTPException(status_code=400, detail="Error login user.")
 
 
 @app.post("/register")

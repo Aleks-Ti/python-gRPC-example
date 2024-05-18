@@ -1,21 +1,27 @@
-from dotenv import load_dotenv
-import os
-from asyncpg import connect
+import subprocess
+from collections.abc import Callable
 
-load_dotenv()
+from sqlalchemy.engine.url import URL
+from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
+from sqlalchemy.ext.asyncio import create_async_engine as _create_async_engine
+from sqlalchemy.orm import sessionmaker
 
-
-def get_connection_params():
-    return {
-        'database': os.getenv('POSTGRES_DB_NAME', None),
-        'user': os.getenv('POSTGRES_USERNAME', None),
-        'password': os.getenv('POSTGRES_PASSWORD', None),
-        'host': os.getenv('POSTGRES_HOST', 'localhost'),
-        'port': os.getenv('POSTGRES_PORT', '5432'),
-    }
+from src.db.build_coonector_db import DataBaseConfig as conf
 
 
-async def db_session():
-    """Не работает, постоянно возвращает генератор а не объект сессии, надо бы починить."""
-    with await connect(**get_connection_params()) as conn:
-        yield conn
+def create_async_engine(url: URL | str) -> AsyncEngine:
+    return _create_async_engine(url=url, echo=False, pool_pre_ping=True)
+
+
+async_session_maker: Callable[..., AsyncSession] = sessionmaker(
+    create_async_engine(conf().build_connection_str()), class_=AsyncSession, expire_on_commit=False,
+)
+
+
+async def get_async_session():
+    async with async_session_maker() as session:
+        yield session
+
+
+async def migrate():
+    subprocess.run("alembic upgrade head", shell=True, check=True)

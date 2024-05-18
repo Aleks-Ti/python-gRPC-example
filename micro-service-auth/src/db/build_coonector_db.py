@@ -34,3 +34,13 @@ class DataBaseConfig:
             port=self.port,
             database=self.name_db,
         ).render_as_string(hide_password=False)
+
+
+def get_connection_params():
+    return {
+        "database": getenv("POSTGRES_DB_NAME", None),
+        "user": getenv("POSTGRES_USERNAME", None),
+        "password": getenv("POSTGRES_PASSWORD", None),
+        "host": getenv("POSTGRES_HOST", "localhost"),
+        "port": getenv("POSTGRES_PORT", "5432"),
+    }
